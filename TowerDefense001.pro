@@ -16,8 +16,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    attack_enemy.cpp \
+    basic_bullet.cpp \
+    basic_enemy.cpp \
+    basic_tower.cpp \
     bullet.cpp \
     enemy.cpp \
+    ice_bullet.cpp \
     main.cpp \
     mainwindow.cpp \
     menu.cpp \
@@ -28,8 +33,13 @@ SOURCES += \
     waypoint.cpp
 
 HEADERS += \
+    attack_enemy.h \
+    basic_bullet.h \
+    basic_enemy.h \
+    basic_tower.h \
     bullet.h \
     enemy.h \
+    ice_bullet.h \
     mainwindow.h \
     menu.h \
     mybutton.h \
@@ -39,7 +49,8 @@ HEADERS += \
     waypoint.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    scene.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

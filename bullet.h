@@ -7,15 +7,17 @@
 #include <QObject>
 #include <QPainter>
 #include"enemy.h"
+
 class Enemy;
+class Scene;
 class Bullet : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QPoint _currentPos READ getCurrentPos WRITE setCurrentPos)
 public:
-    Bullet(QPoint startPos, QPoint targetPoint, int dam, Enemy *target,QString pic="IMG_0462-2.png");
-    void drawer(QPainter *painter);
-    void move();
+    Bullet(QPoint startPos, QPoint targetPoint, int dam, Enemy *target,Scene*game,const QPixmap &pic);
+    virtual void drawer(QPainter *painter);
+    virtual void move();
     void setCurrentPos(QPoint pos);
     QPoint getCurrentPos();
 
@@ -23,15 +25,19 @@ signals:
 
 
 public slots:
-    void hitTarget();
-private:
+   virtual void hit_target()=0;
+protected:
     QPoint _startpoint;
     QPoint _targetpoint;
-    QPoint curpoint;
     QPixmap pix;
     Enemy *targetEnemy;
+    Scene* _game;
     int	   damage;
-    bool hit_target;
+private:
+
+    QPoint curpoint;
+
+
 };
 
 #endif // BULLET_H

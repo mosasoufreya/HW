@@ -11,12 +11,14 @@
 
 class Tower;
 class WayPoint;
+class Scene;
 class Enemy : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QPoint currentPos READ getCurrentPos WRITE setCurrentPos)
 public:
-    Enemy(int speed=10,int hp=5, QString pic="IMG_0455-2.png");
+    Enemy(Scene*game, const QPixmap &pixmap,QSize fixedsize,int curhp,int speed,int hp);
+    virtual ~Enemy();
     void drawer(QPainter *painter);
     void move();
     void setCurrentPos(QPoint pos);
@@ -25,9 +27,10 @@ public:
     void getAttack(Tower *attacker);
     bool distoCircle(QPoint p1, double r1, QPoint p2, double r2);
     void getDamage(int dam);
-
-
-private:
+    void getRemoved();
+    void addWaypoint();
+    virtual void summon() = 0;
+protected:
     QPoint curpoint;
     QPixmap pix;
     QList<Tower *>	attacker_list;
@@ -38,12 +41,15 @@ private:
     int curHP;
     int Speed;
     int damage;
-
-
+    Scene*_game;
+    const QSize fixedSize;
 signals:
 
 public slots:
     void doActive();
+
+
+
 };
 
 #endif // ENEMY_H

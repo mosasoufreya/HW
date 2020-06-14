@@ -10,9 +10,9 @@ class TowerPosition
 {
 public:
     TowerPosition(QPoint pos, const QPixmap &picture=QPixmap(":/image/IMG_0464-2.png"));
-    void setHasTower(bool hasTower = true);
+    void sethasTower(bool hasTower = true);
     bool hasTower() const;
-    void setHasShow(bool hasShow = true);
+    void sethasShow(bool hasShow = true);
     bool hasShow() const;
     bool inRange(const QPoint &pos) const;
     QPoint getPos();

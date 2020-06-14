@@ -1,7 +1,7 @@
 #include "towerposition.h"
 #include <QPainter>
 
-const QSize TowerPosition::_fixedSize(144, 92);
+const QSize TowerPosition::_fixedSize(65, 43);
 
 TowerPosition::TowerPosition(QPoint pos, const QPixmap & picture)
     : _hasTower(false)
@@ -9,11 +9,6 @@ TowerPosition::TowerPosition(QPoint pos, const QPixmap & picture)
     , _pos(pos)
     , _picture(picture)
 {
-}
-
-void TowerPosition::setHasTower(bool hasTower)
-{
-    _hasTower = hasTower;
 }
 
 bool TowerPosition::hasTower() const
@@ -26,9 +21,13 @@ bool TowerPosition::hasShow() const
     return _hasShow;
 }
 
-void TowerPosition::setHasShow(bool hasShow)
+void TowerPosition::sethasShow(bool hasShow)
 {
     _hasShow = hasShow;
+}
+void TowerPosition::sethasTower(bool hasTower)
+{
+    _hasTower = hasTower;
 }
 
 bool TowerPosition::inRange(const QPoint &pos) const
@@ -40,7 +39,7 @@ bool TowerPosition::inRange(const QPoint &pos) const
 
 QPoint TowerPosition::getPos()
 {
-    QPoint Pos(this->_pos.x() + this->_fixedSize.width() / 2 - 3, this->_pos.y() + this->_fixedSize.height() / 2 - 20);
+    QPoint Pos(this->_pos.x() , this->_pos.y() );
     return Pos;
 }
 

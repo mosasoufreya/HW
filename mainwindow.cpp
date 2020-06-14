@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
 
-    setFixedSize(1200,600);
+  setFixedSize(1200,600);
     ui->setupUi(this);
 
    MyButton*bin1=new MyButton(":/image/IMG_0450-2.png");//quit按钮

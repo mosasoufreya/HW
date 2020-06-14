@@ -5,21 +5,35 @@
 #include"enemy.h"
 #include<QList>
 #include<cmath>
+#include "scene.h"
 
-Tower::Tower(QPoint pos,QString pix,int dam, int attackrange, int attackrate)
-    : QObject(0),_pos(pos),pixmap(pix),attackRange(attackrange), attackRate(attackrate), _hasShowRange(false), damage(dam),targetEnemy(NULL){
+Tower::Tower(QPoint pos,Scene *game,const QPixmap &pix,int dam,const QSize fixedsize, int attackrange, int attackrate)
+    : QObject(0),pixmap(pix),attackRange(attackrange),
+      damage(dam),attackRate(attackrate),_game(game), targetEnemy(NULL),_pos(pos),_hasShowRange(false),fixedSize(fixedsize){
    shootTimer = new QTimer(this);
-   connect(shootTimer, SIGNAL(timeout()), this, SLOT(fireBullet()));
+   connect(shootTimer, SIGNAL(timeout()), this, SLOT(shootWeapon()));
+}
+Tower::~Tower()
+{
+    delete shootTimer;
+    shootTimer = NULL;
 }
 void Tower::drawer(QPainter *painter){
-    painter->drawPixmap(_pos,pixmap);
+     painter->save();
+    const QPoint newPos(15, 5);
+    painter->translate(this->_pos);
+    painter->drawPixmap(newPos.x(), newPos.y() , fixedSize.width(), fixedSize.height(),  this->pixmap);
+
+    painter->restore();
 }
 void Tower:: drawRange(QPainter *painter){
     painter->save();
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->setPen(Qt::white);
-    painter->drawEllipse(this->_pos, this->attackRange, this->attackRange);
-
+    const QPoint newPos(30, 20);
+    painter->translate(this->_pos);
+    painter->drawEllipse(newPos, this->attackRange, this->attackRange);
+    painter->restore();
 }
 
 void Tower::attack()
@@ -35,15 +49,23 @@ void Tower::attackChoose(Enemy *enemy)
 }
 
 void Tower::checkInRange(){
-    foreach (Enemy *enemy, enemy_list)
+    if (targetEnemy)
+        {
+            if (!distoCircle(_pos, attackRange, targetEnemy->getCurrentPos(), 1))
+                lostSight();
+        }
+        else
+        {
+            QList<Enemy *> enemyList = _game->enemylist();
+    foreach (Enemy *enemy, enemyList)
     {
         if (distoCircle(_pos, attackRange, enemy->getCurrentPos(), 1))
         {
             attackChoose(enemy);
-            targetEnemy=enemy;
             break;
         }
     }
+  }
 }
 
 void Tower::lostSight()
@@ -83,4 +105,10 @@ void Tower::setHasShowRange(bool hasShowRange)
 }
 QPoint Tower::getPos() const{
     return _pos;
+}
+void Tower::targetdied(){
+    if(targetEnemy)
+            targetEnemy = NULL;
+
+        shootTimer->stop();
 }
